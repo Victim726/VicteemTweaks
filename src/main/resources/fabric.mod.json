@@ -15,11 +15,8 @@
 	"icon": "assets/victeemtweaks/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"gay.plat.victeemtweaks.VicteemTweaks"
-		],
 		"client": [
-			"gay.plat.victeemtweaks.VicteemTweaksClient"
+			"gay.plat.victeemtweaks.VicteemTweaks"
 		]
 	},
 	"mixins": [

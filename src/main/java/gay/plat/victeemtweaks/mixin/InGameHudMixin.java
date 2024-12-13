@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,7 +52,7 @@ public abstract class InGameHudMixin {
 
 	@Inject(at = @At("HEAD"), method = "render")
 	private void init(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-		PlayerEntity player = this.client.player;
+		/*PlayerEntity player = this.client.player;
 		if (player == null || !(player.isPlayer())) {
 			return;
 		}
@@ -71,24 +72,7 @@ public abstract class InGameHudMixin {
 		armorStackList.add(leggingsStack);
 		armorStackList.add(bootsStack);
 
-		List<Integer> list0 = new ArrayList<>();
-		list0.add(0);
-		list0.add(0);
-		List<Integer> list1 = new ArrayList<>();
-		list1.add(context.getScaledWindowWidth()-64);
-		list1.add(0);
-		List<Integer> list2 = new ArrayList<>();
-		list2.add(0);
-		list2.add(context.getScaledWindowHeight()-64);
-		List<Integer> list3 = new ArrayList<>();
-		list3.add(context.getScaledWindowWidth()-64);
-		list3.add(context.getScaledWindowHeight()-64);
-
-		Map<Integer,List<Integer>> offsetMap = new HashMap<>();
-		offsetMap.put(0,list0);
-		offsetMap.put(1,list1);
-		offsetMap.put(2,list2);
-		offsetMap.put(3,list3);
+		Map<Integer, List<Integer>> offsetMap = getIntegerListMap(context);
 
 		int presetSelection = 3;
 
@@ -107,5 +91,27 @@ public abstract class InGameHudMixin {
 
 
 		}
+	}
+
+	private static @NotNull Map<Integer, List<Integer>> getIntegerListMap(DrawContext context) {
+		List<Integer> list0 = new ArrayList<>();
+		list0.add(0);
+		list0.add(0);
+		List<Integer> list1 = new ArrayList<>();
+		list1.add(context.getScaledWindowWidth()-64);
+		list1.add(0);
+		List<Integer> list2 = new ArrayList<>();
+		list2.add(0);
+		list2.add(context.getScaledWindowHeight()-64);
+		List<Integer> list3 = new ArrayList<>();
+		list3.add(context.getScaledWindowWidth()-64);
+		list3.add(context.getScaledWindowHeight()-64);
+
+		Map<Integer,List<Integer>> offsetMap = new HashMap<>();
+		offsetMap.put(0,list0);
+		offsetMap.put(1,list1);
+		offsetMap.put(2,list2);
+		offsetMap.put(3,list3);
+		return offsetMap;*/
 	}
 }

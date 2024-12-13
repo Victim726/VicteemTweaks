@@ -1,27 +1,20 @@
 package gay.plat.victeemtweaks;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import gay.plat.victeemtweaks.config.customsweepparticle.SweepParticleData;
 import gay.plat.victeemtweaks.config.playeritemmodel.PlayerItemModelData;
-import gay.plat.victeemtweaks.particles.ChainParticleOne;
 import gay.plat.victeemtweaks.particles.VicteemTweaksParticles;
 import gay.plat.victeemtweaks.util.ColorUtil;
-import gay.plat.victeemtweaks.util.ParticleUtil;
 import gay.plat.victeemtweaks.util.PlayerUtil;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.client.particle.SweepAttackParticle;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,15 +22,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class VicteemTweaks implements ModInitializer {
+public class VicteemTweaks implements ClientModInitializer {
 	public static final String MOD_ID = "victeemtweaks";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
-	public void onInitialize() {
+	public void onInitializeClient() {
 		LOGGER.info("ModInit");
 
 		VicteemTweaksParticles.registerParticles();
@@ -45,7 +37,30 @@ public class VicteemTweaks implements ModInitializer {
 
 		ClientLifecycleEvents.CLIENT_STARTED.register((client) -> SweepParticleData.loadJsonData());
 
-		ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("ping")
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_1, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_1_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_2, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_2_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_3, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_3_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_4, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_4_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_5, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_5_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_6, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_6_ALT, SweepAttackParticle.Factory::new);
+
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_7, SweepAttackParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(VicteemTweaksParticles.SWEEP_ATTACK_7_ALT, SweepAttackParticle.Factory::new);
+
+		ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("vtping")
 			.executes(context -> {
 				MinecraftClient client = MinecraftClient.getInstance();
 				assert client.player != null;
@@ -69,47 +84,9 @@ public class VicteemTweaks implements ModInitializer {
 					final String uuid = client.getServer().getPlayerManager().getPlayer(username).getUuidAsString();
 					client.player.sendMessage(Text.literal("Ping of ").append(client.getServer().getPlayerManager().getPlayer(username).getName()).append(": ").append(Text.literal(String.valueOf(PlayerUtil.getPing(uuid))).withColor(ColorUtil.getPingColor(PlayerUtil.getPing(uuid))).append(Text.literal("ms").withColor(0x00FFFFFF))));
 					return 1;
-
-					/*List<String> serverNameList = new ArrayList<>();
-					for (String i : Arrays.stream(Objects.requireNonNull(client.getServer()).getPlayerNames()).toList()) {
-						serverNameList.add(i.toLowerCase());
-					}
-					if (!(serverNameList.contains(username.toLowerCase()))) {
-						client.player.sendMessage(Text.literal("Player not on server."));
-						return 1;
-					}
-					final String uuid = PlayerUtil.getUUID(username.toLowerCase());
-					if (uuid.isEmpty()) {
-						client.player.sendMessage(Text.literal("Invalid username inputted."));
-						return 1;
-					}
-				*/
 				})
 			)
 		));
-
-		/*ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("locateplayer")
-			.then(ClientCommandManager.argument("username", StringArgumentType.string())
-				.executes(context -> {
-					MinecraftClient client = MinecraftClient.getInstance();
-					assert client.player != null;
-					final String username = StringArgumentType.getString(context, "username");
-					List<String> serverNameList = new ArrayList<>();
-					for (String i : Arrays.stream(Objects.requireNonNull(client.getServer()).getPlayerNames()).toList()) {
-						serverNameList.add(i.toLowerCase());
-					}
-					if (!(serverNameList.contains(username.toLowerCase()))) {
-						client.player.sendMessage(Text.literal("Player not on server."));
-						return 1;
-					}
-					BlockPos playerLocation = client.getServer().getPlayerManager().getPlayer(username).getBlockPos();
-					System.out.println(playerLocation);
-					System.out.println(String.format("Location of %s: %s, %s, %s",username,playerLocation.getX(),playerLocation.getY(),playerLocation.getZ()));
-					client.player.sendMessage(Text.literal(String.format("Location of %s: %s, %s, %s",username,playerLocation.getX(),playerLocation.getY(),playerLocation.getZ())));
-					return 1;
-				})
-			)
-		));*/
 
 		ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("config")
 			.then(ClientCommandManager.literal("load")
@@ -272,34 +249,6 @@ public class VicteemTweaks implements ModInitializer {
 					)
 				)
 			)
-		));
-		ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("particleline")
-			.then(ClientCommandManager.argument("x", IntegerArgumentType.integer())
-				.then(ClientCommandManager.argument("y", IntegerArgumentType.integer())
-					.then(ClientCommandManager.argument("z", IntegerArgumentType.integer())
-						.executes(context -> {
-							PlayerEntity player = MinecraftClient.getInstance().player;
-							final int x = IntegerArgumentType.getInteger(context, "x");
-							final int y = IntegerArgumentType.getInteger(context, "y");
-							final int z = IntegerArgumentType.getInteger(context, "z");
-							ParticleUtil.createParticleLine(0x000000,player.getPos(),player.getPos().add(x,y,z),player.getWorld());
-							player.sendMessage(Text.literal("Successfully testthinged."), false);
-							return 1;
-						})
-					)
-				)
-			)
-		));
-		ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("deathanimtest")
-			.executes(context -> {
-				PlayerEntity player = MinecraftClient.getInstance().player;
-
-				player.getWorld().addImportantParticle(VicteemTweaksClient.GOLDEN_CHAIN_ONE,player.getX(),player.getY(),player.getZ(),0,0,0);
-				//player.getWorld().addImportantParticle(VicteemTweaksClient.GOLDEN_CHAIN_TWO,player.getX(),player.getY(),player.getZ(),0,0,0);
-
-				player.sendMessage(Text.literal("Successfully testthinged."), false);
-				return 1;
-			})
 		));
 		ClientCommandRegistrationCallback.EVENT.register((callback, a) -> callback.register(ClientCommandManager.literal("testthing")
 			.executes(context -> {

@@ -2,11 +2,12 @@ package gay.plat.victeemtweaks.mixin;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import gay.plat.victeemtweaks.VicteemTweaksClient;
 import gay.plat.victeemtweaks.config.customsweepparticle.SweepParticleClass;
 import gay.plat.victeemtweaks.config.customsweepparticle.SweepParticleData;
 import gay.plat.victeemtweaks.config.playeritemmodel.PlayerItemModelData;
 import gay.plat.victeemtweaks.particles.VicteemTweaksParticles;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.lang.reflect.Type;
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
 
@@ -31,7 +33,7 @@ public abstract class PlayerEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "spawnSweepAttackParticles", cancellable = true)
     private void onSweepAttackParticleSpawn(CallbackInfo ci) {
-        if (getMainArm() == Arm.LEFT) {
+        /*if (getMainArm() == Arm.LEFT) {
             PlayerEntity player = this.getInventory().player;
             double d = -MathHelper.sin(player.getYaw() * 0.017453292F);
             double e = MathHelper.cos(player.getYaw() * 0.017453292F);
@@ -196,7 +198,7 @@ public abstract class PlayerEntityMixin {
             if (spawnedParticle) {
                 ci.cancel();
             }
-        }
+        }*/
     }
 
     @Inject(at = @At("HEAD"), method = "tick")
@@ -209,31 +211,11 @@ public abstract class PlayerEntityMixin {
 
         for (int i = 0; i < player.getInventory().size(); i++) {
             ItemStack stack = player.getInventory().getStack(i);
-            String stackID = stack.getItem().toString().replace("minecraft:","");
+            String stackID = stack.getItem().toString().replace("minecraft:", "");
 
-            PlayerItemModelData.renameItem(stack,uuid,stackID);
-
-
-            /*if (PlayerItemModelData.get(uuid).useItem("generic_sword")
-                    && stack.getItem() instanceof SwordItem) {
-                PlayerItemModelData.renameItem(stack,uuid,"generic_sword");
-            } else if (PlayerItemModelData.get(uuid).useItem("netherite_sword")
-                    && stack.getItem() == Items.NETHERITE_SWORD) {
-                PlayerItemModelData.renameItem(stack,uuid,"netherite_sword");
-            } else if (PlayerItemModelData.get(uuid).useItem("diamond_sword")
-                    && stack.getItem() == Items.DIAMOND_SWORD) {
-                PlayerItemModelData.renameItem(stack,uuid,"diamond_sword");
-            } else if (PlayerItemModelData.get(uuid).useItem("generic_axe")
-                    && stack.getItem() instanceof AxeItem) {
-                PlayerItemModelData.renameItem(stack,uuid,"generic_axe");
-            } else if (PlayerItemModelData.get(uuid).useItem("netherite_axe")
-                    && stack.getItem() == Items.NETHERITE_AXE) {
-                PlayerItemModelData.renameItem(stack,uuid,"netherite_axe");
-            } else if (PlayerItemModelData.get(uuid).useItem("diamond_axe")
-                    && stack.getItem() == Items.DIAMOND_AXE) {
-                PlayerItemModelData.renameItem(stack,uuid,"diamond_axe");
-            }*/
+            PlayerItemModelData.renameItem(stack, uuid, stackID);
         }
+
         //player.getWorld().addImportantParticle(VicteemTweaksClient.GOLDEN_CHAIN,player.getX(),player.getY(),player.getZ(),0,0,0);
     }
 }
