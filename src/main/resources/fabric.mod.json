@@ -15,16 +15,23 @@
 	"icon": "assets/victeemtweaks/icon.png",
 	"environment": "*",
 	"entrypoints": {
+		"main": [
+			"gay.plat.victeemtweaks.VicteemTweaksMain"
+		],
 		"client": [
 			"gay.plat.victeemtweaks.VicteemTweaks"
 		]
 	},
 	"mixins": [
-		"victeemtweaks.mixins.json"
+		"victeemtweaks.mixins.json",
+		{
+			"config": "victeemtweaks.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.5",
-		"minecraft": "~1.21",
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"
 	},

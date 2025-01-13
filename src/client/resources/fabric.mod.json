@@ -1,0 +1,34 @@
+{
+  	"schemaVersion": 1,
+  	"id": "victeemtweaks",
+  	"version": "${version}",
+  	"name": "VicteemTweaks",
+  	"description": "Client-side mod made by Victeem.",
+	"authors": [
+		"Victeem"
+	],
+  	"contact": {
+    	"homepage": "https://plat.gay/",
+    	"sources": "https://github.com/Victim726/VicteemTweaks"
+  	},
+	"license": "ARR",
+  	"icon": "assets/victeemtweaks/icon.png",
+	"environment": "client",
+	"entrypoints": {
+    	"client": [
+			"gay.plat.victeemtweaks.VicteemTweaks"
+    	]
+	},
+	"mixins": [
+      "victeemtweaks.mixins.json"
+  	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
