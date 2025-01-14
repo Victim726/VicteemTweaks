@@ -23,6 +23,7 @@ loom {
 
 	mods {
 		"victeemtweaks" {
+			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
 	}
