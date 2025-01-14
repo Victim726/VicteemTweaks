@@ -3,20 +3,15 @@ package gay.plat.victeemtweaks;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import gay.plat.victeemtweaks.itemrenamer.ItemNameManager;
-import gay.plat.victeemtweaks.screens.ItemRenamerListScreen;
 import gay.plat.victeemtweaks.util.PlayerUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.command.argument.ItemStackArgumentType;
-import net.minecraft.item.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +22,7 @@ public class VicteemTweaks implements ClientModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-	boolean openItemRenamerListScreen = false;
+	public static boolean openItemRenamerListScreen = false;
 
 	@Override
 	public void onInitializeClient() {
