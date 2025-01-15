@@ -1,6 +1,5 @@
 package gay.plat.victeemtweaks.mixin;
 
-import gay.plat.victeemtweaks.VicteemTweaks;
 import gay.plat.victeemtweaks.itemrenamer.ItemNameManager;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
