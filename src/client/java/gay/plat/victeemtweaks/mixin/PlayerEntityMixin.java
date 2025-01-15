@@ -1,5 +1,6 @@
 package gay.plat.victeemtweaks.mixin;
 
+import gay.plat.victeemtweaks.config.VicteemTweaksConfig;
 import gay.plat.victeemtweaks.itemrenamer.ItemNameManager;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
@@ -37,16 +38,19 @@ public abstract class PlayerEntityMixin{
 			ItemNameManager.renameItemFromConfig(stack, uuid);
 		}
 
-		prevAttributeModifiersComponent = player.getMainHandStack().getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
+		if (VicteemTweaksConfig.ctn_isEnabled)
+			prevAttributeModifiersComponent = player.getMainHandStack().getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
 	}
 
 	@Inject(at = @At("HEAD"), method = "attack")
 	private void onAttack(Entity target, CallbackInfo info) {
 		final PlayerEntity player = (PlayerEntity)(Object)this;
 		if (player.getWorld().isClient()) {
-			AttributeModifiersComponent attributeModifiersComponent = player.getMainHandStack().getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
-			if (attributeModifiersComponent != prevAttributeModifiersComponent)
-				player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(),1,1);
+			if (VicteemTweaksConfig.ctn_isEnabled) {
+				AttributeModifiersComponent attributeModifiersComponent = player.getMainHandStack().getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT);
+				if (attributeModifiersComponent != prevAttributeModifiersComponent)
+					player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(), VicteemTweaksConfig.ctn_volume, 1);
+			}
 		}
 	}
 }

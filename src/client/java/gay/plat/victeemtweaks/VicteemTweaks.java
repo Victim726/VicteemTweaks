@@ -2,6 +2,8 @@ package gay.plat.victeemtweaks;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import eu.midnightdust.lib.config.MidnightConfig;
+import gay.plat.victeemtweaks.config.VicteemTweaksConfig;
 import gay.plat.victeemtweaks.itemrenamer.ItemNameManager;
 import gay.plat.victeemtweaks.util.PlayerUtil;
 import net.fabricmc.api.ClientModInitializer;
@@ -217,6 +219,9 @@ public class VicteemTweaks implements ClientModInitializer {
 						)
 				)
 		));
+
+
+		MidnightConfig.init(MODID, VicteemTweaksConfig.class);
 	}
 
 	public static Identifier identiferOf(String id) {
